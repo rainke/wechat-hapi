@@ -7,10 +7,9 @@
     {
       "type": "node",
       "request": "attach",
-      "name": "启动程序",
-      "port": 5858,
-      "restart": true,
-      "protocol": "inspector"
+      "name": "附加程序",
+      "processId": "${command:PickProcess}",
+      "restart": true
     }
   ]
 }

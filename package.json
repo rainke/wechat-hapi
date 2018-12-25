@@ -6,7 +6,7 @@
   "author": "何彭 <rainke@magicare.me>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node --inspect=5858 app/server.ts",
+    "start": "ts-node app/server.ts",
     "dev": "nodemon"
   },
   "dependencies": {
