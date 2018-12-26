@@ -17,7 +17,7 @@
   resolved "http://registry.npm.taobao.org/@types/events/download/@types/events-1.2.0.tgz#81a6731ce4df43619e5c8c945383b3e62a89ea86"
   integrity sha1-gaZzHOTfQ2GeXIyUU4Oz5iqJ6oY=
 
-"@types/hapi@^17.8.2":
+"@types/hapi@*", "@types/hapi@^17.8.2":
   version "17.8.2"
   resolved "http://registry.npm.taobao.org/@types/hapi/download/@types/hapi-17.8.2.tgz#667fbeff250c338dca9e6cc1779f5696c7c148ed"
   integrity sha1-Zn++/yUMM43KnmzBd59WlsfBSO0=
@@ -30,6 +30,13 @@
     "@types/node" "*"
     "@types/podium" "*"
     "@types/shot" "*"
+
+"@types/inert@^5.1.2":
+  version "5.1.2"
+  resolved "http://registry.npm.taobao.org/@types/inert/download/@types/inert-5.1.2.tgz#2bb8bef3b2462f904c960654c9edfa39285a85c6"
+  integrity sha1-K7i+87JGL5BMlgZUye36OShahcY=
+  dependencies:
+    "@types/hapi" "*"
 
 "@types/iron@*":
   version "5.0.1"
@@ -836,6 +843,18 @@ imurmurhash@^0.1.4:
   resolved "http://registry.npm.taobao.org/imurmurhash/download/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
   integrity sha1-khi5srkoojixPcT7a21XbyMUU+o=
 
+inert@^5.1.2:
+  version "5.1.2"
+  resolved "http://registry.npm.taobao.org/inert/download/inert-5.1.2.tgz#0c26f15bc22aae7af9c1f1a164bf867c58c5f4a6"
+  integrity sha1-DCbxW8Iqrnr5wfGhZL+GfFjF9KY=
+  dependencies:
+    ammo "3.x.x"
+    boom "7.x.x"
+    bounce "1.x.x"
+    hoek "6.x.x"
+    joi "14.x.x"
+    lru-cache "4.1.x"
+
 inflight@^1.0.4:
   version "1.0.6"
   resolved "http://registry.npm.taobao.org/inflight/download/inflight-1.0.6.tgz#49bd6331d7d02d0c09bc910a1075ba8165b56df9"
@@ -1110,7 +1129,7 @@ lowercase-keys@^1.0.0:
   resolved "http://registry.npm.taobao.org/lowercase-keys/download/lowercase-keys-1.0.1.tgz#6f9e30b47084d971a7c820ff15a6c5167b74c26f"
   integrity sha1-b54wtHCE2XGnyCD/FabFFnt0wm8=
 
-lru-cache@^4.0.1:
+lru-cache@4.1.x, lru-cache@^4.0.1:
   version "4.1.5"
   resolved "http://registry.npm.taobao.org/lru-cache/download/lru-cache-4.1.5.tgz#8bbe50ea85bed59bc9e33dcab8235ee9bcf443cd"
   integrity sha1-i75Q6oW+1ZvJ4z3KuCNe6bz0Q80=

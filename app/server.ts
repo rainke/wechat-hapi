@@ -1,18 +1,26 @@
 import * as Hapi from 'hapi';
+import inert from 'inert';
 import crypto from 'crypto';
+import Path from 'path';
+import getAccessToken from './utils/getAccessToken'
 
 const server = new Hapi.Server({
   host: 'localhost',
-  port: 4000
-});
-
-server.route({
-  method:'GET',
-  path:'/',
-  handler:function(request,h) {
-      return 'hello boy';
+  port: 4000,
+  routes: {
+    files: {
+      relativeTo: Path.join(process.cwd(), 'public')
+    }
   }
 });
+
+// server.route({
+//   method:'GET',
+//   path:'/',
+//   handler: function(request,h) {
+//     return getAccessToken();
+//   }
+// });
 
 interface wxQuery extends Hapi.RequestQuery {
   echostr: string;
@@ -39,6 +47,18 @@ server.route({
 });
 
 const start = async function() {
+  await server.register(inert);
+
+  server.route({
+    method:'GET',
+    path:'/{param*}',
+    handler: {
+      directory: {
+        path: '.'
+      }
+    }
+  });
+
   try {
     await server.start();
   }
