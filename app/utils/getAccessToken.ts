@@ -2,6 +2,7 @@ import wreck from 'wreck';
 import Url from 'url';
 import fs from 'fs';
 import util from 'util';
+import config from '../config';
 
 const stat = util.promisify(fs.stat);
 const writeFile = util.promisify(fs.writeFile);
@@ -17,8 +18,8 @@ export default async () => {
     const baseUrl = 'https://api.weixin.qq.com/cgi-bin/token';
     const params = {
       grant_type: 'client_credential',
-      appid: '',
-      secret: ''
+      appid: config.appid,
+      secret: config.appsecret
     };
     const url = baseUrl + '?' + new Url.URLSearchParams(params).toString();
     const {payload} = await wreck.get(url, {});
