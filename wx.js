@@ -15,7 +15,8 @@
   function handle(type, handler, config) {
     win.WeixinJSBridge
       ? WeixinJSBridge.on(type, function(e) {
-          config && config.trigger && config.trigger(e), triggerCallbackHandler(type, e, handler);
+          config && config.trigger && config.trigger(e),
+            triggerCallbackHandler(type, e, handler);
         })
       : config
       ? deleteComplete(type, config)
@@ -63,10 +64,17 @@
       delete res.err_desc,
       delete res.err_detail;
     var errMsg = res.errMsg;
-    errMsg || ((errMsg = res.err_msg), delete res.err_msg, (errMsg = formatErrMsg(type, errMsg)), (res.errMsg = errMsg)),
-      (handler = handler || {})._complete && (handler._complete(res), delete handler._complete),
+    errMsg ||
+      ((errMsg = res.err_msg),
+      delete res.err_msg,
+      (errMsg = formatErrMsg(type, errMsg)),
+      (res.errMsg = errMsg)),
+      (handler = handler || {})._complete &&
+        (handler._complete(res), delete handler._complete),
       (errMsg = res.errMsg || ''),
-      globalConfig.debug && !handler.isInnerInvoke && alert(JSON.stringify(res));
+      globalConfig.debug &&
+        !handler.isInnerInvoke &&
+        alert(JSON.stringify(res));
     var idx = errMsg.indexOf(':');
     switch (errMsg.substring(idx + 1)) {
       case 'ok':
@@ -89,17 +97,26 @@
       var r = errMsg.indexOf(':');
       'confirm' == (msgStatus = errMsg.substring(r + 1)) && (msgStatus = 'ok'),
         'failed' == msgStatus && (msgStatus = 'fail'),
-        -1 != msgStatus.indexOf('failed_') && (msgStatus = msgStatus.substring(7)),
-        -1 != msgStatus.indexOf('fail_') && (msgStatus = msgStatus.substring(5)),
-        ('access denied' != (msgStatus = (msgStatus = msgStatus.replace(/_/g, ' ')).toLowerCase()) &&
+        -1 != msgStatus.indexOf('failed_') &&
+          (msgStatus = msgStatus.substring(7)),
+        -1 != msgStatus.indexOf('fail_') &&
+          (msgStatus = msgStatus.substring(5)),
+        ('access denied' !=
+          (msgStatus = (msgStatus = msgStatus.replace(
+            /_/g,
+            ' '
+          )).toLowerCase()) &&
           'no permission to execute' != msgStatus) ||
           (msgStatus = 'permission denied'),
-        'config' == msgType && 'function not exist' == msgStatus && (msgStatus = 'ok'),
+        'config' == msgType &&
+          'function not exist' == msgStatus &&
+          (msgStatus = 'ok'),
         '' == msgStatus && (msgStatus = 'fail');
     }
     return (errMsg = msgType + ':' + msgStatus);
   }
-  function transformApiList(apiList) { // onMenuShareTimeline => menu:share:timeline
+  function transformApiList(apiList) {
+    // onMenuShareTimeline => menu:share:timeline
     if (apiList) {
       for (var i = 0, len = apiList.length; i < len; ++i) {
         var api = apiList[i],
@@ -118,11 +135,21 @@
     }
   }
   function update(e) {
-    if (!(isMac || isWxdebugger || globalConfig.debug || wechatVersion < '6.0.2' || globalInfo.systemType < 0)) {
+    if (
+      !(
+        isMac ||
+        isWxdebugger ||
+        globalConfig.debug ||
+        wechatVersion < '6.0.2' ||
+        globalInfo.systemType < 0
+      )
+    ) {
       var img = new Image();
       (globalInfo.appId = globalConfig.appId),
-        (globalInfo.initTime = timeConfig.initEndTime - timeConfig.initStartTime),
-        (globalInfo.preVerifyTime = timeConfig.preVerifyEndTime - timeConfig.preVerifyStartTime),
+        (globalInfo.initTime =
+          timeConfig.initEndTime - timeConfig.initStartTime),
+        (globalInfo.preVerifyTime =
+          timeConfig.preVerifyEndTime - timeConfig.preVerifyStartTime),
         wx.getNetworkType({
           isInnerInvoke: !0,
           success: function(e) {
@@ -211,7 +238,8 @@
       isWxdebugger = -1 != userAgent.indexOf('wxdebugger'),
       isWechat = -1 != userAgent.indexOf('micromessenger'),
       isAndroid = -1 != userAgent.indexOf('android'),
-      isIphone = -1 != userAgent.indexOf('iphone') || -1 != userAgent.indexOf('ipad'),
+      isIphone =
+        -1 != userAgent.indexOf('iphone') || -1 != userAgent.indexOf('ipad'),
       wechatVersion = (function() {
         var e =
           userAgent.match(/micromessenger\/(\d+\.\d+\.\d+)/) ||
@@ -254,7 +282,9 @@
                 { verifyJsApiList: transformApiList(globalConfig.jsApiList) },
                 (function() {
                   (callbacks._complete = function(e) {
-                    (timeConfig.preVerifyEndTime = getCurrent()), (state.state = 1), (state.data = e);
+                    (timeConfig.preVerifyEndTime = getCurrent()),
+                      (state.state = 1),
+                      (state.data = e);
                   }),
                     (callbacks.success = function(e) {
                       globalInfo.isPreVerifyOk = 0;
@@ -268,7 +298,8 @@
                       update();
                     }),
                     (callbacks.complete = function(n) {
-                      for (var i = 0, t = completes.length; i < t; ++i) completes[i]();
+                      for (var i = 0, t = completes.length; i < t; ++i)
+                        completes[i]();
                       callbacks._completes = [];
                     }),
                     callbacks
@@ -278,7 +309,11 @@
                 (timeConfig.preVerifyStartTime = getCurrent());
             else {
               state.state = 1;
-              for (var e = callbacks._completes, t = 0, o = e.length; t < o; ++t)
+              for (
+                var e = callbacks._completes, t = 0, o = e.length;
+                t < o;
+                ++t
+              )
                 e[t]();
               callbacks._completes = [];
             }
@@ -286,12 +321,16 @@
             initWx();
         },
         ready: function(cb) {
-          0 != state.state ? cb() : (callbacks._completes.push(cb), !isWechat && globalConfig.debug && cb());
+          0 != state.state
+            ? cb()
+            : (callbacks._completes.push(cb),
+              !isWechat && globalConfig.debug && cb());
         },
         error: function(e) {
-          wechatVersion < '6.0.2' || (-1 == state.state ? e(state.data) : (callbacks._fail = e));
+          wechatVersion < '6.0.2' ||
+            (-1 == state.state ? e(state.data) : (callbacks._fail = e));
         },
-        checkJsApi: function(e) {
+        checkJsApi: function(options) {
           var n = function(e) {
             var n = e.checkResult;
             for (var i in n) {
@@ -302,18 +341,18 @@
           };
           invoke(
             'checkJsApi',
-            { jsApiList: transformApiList(e.jsApiList) },
-            ((e._complete = function(e) {
+            { jsApiList: transformApiList(options.jsApiList) },
+            ((options._complete = function(e) {
               if (isAndroid) {
                 var i = e.checkResult;
                 i && (e.checkResult = JSON.parse(i));
               }
               e = n(e);
             }),
-            e)
+            options)
           );
         },
-        onMenuShareTimeline: function(e) {
+        onMenuShareTimeline: function(options) {
           handle(
             eventTypes.onMenuShareTimeline,
             {
@@ -321,52 +360,52 @@
                 invoke(
                   'shareTimeline',
                   {
-                    title: e.title || title,
-                    desc: e.title || title,
-                    img_url: e.imgUrl || '',
-                    link: e.link || location.href,
-                    type: e.type || 'link',
-                    data_url: e.dataUrl || ''
+                    title: options.title || title,
+                    desc: options.title || title,
+                    img_url: options.imgUrl || '',
+                    link: options.link || location.href,
+                    type: options.type || 'link',
+                    data_url: options.dataUrl || ''
                   },
-                  e
+                  options
                 );
               }
             },
-            e
+            options
           );
         },
-        onMenuShareAppMessage: function(e) {
+        onMenuShareAppMessage: function(options) {
           handle(
             eventTypes.onMenuShareAppMessage,
             {
               complete: function(n) {
                 'favorite' === n.scene
                   ? invoke('sendAppMessage', {
-                      title: e.title || title,
-                      desc: e.desc || '',
-                      link: e.link || location.href,
-                      img_url: e.imgUrl || '',
-                      type: e.type || 'link',
-                      data_url: e.dataUrl || ''
+                      title: options.title || title,
+                      desc: options.desc || '',
+                      link: options.link || location.href,
+                      img_url: options.imgUrl || '',
+                      type: options.type || 'link',
+                      data_url: options.dataUrl || ''
                     })
                   : invoke(
                       'sendAppMessage',
                       {
-                        title: e.title || title,
-                        desc: e.desc || '',
-                        link: e.link || location.href,
-                        img_url: e.imgUrl || '',
-                        type: e.type || 'link',
-                        data_url: e.dataUrl || ''
+                        title: options.title || title,
+                        desc: options.desc || '',
+                        link: options.link || location.href,
+                        img_url: options.imgUrl || '',
+                        type: options.type || 'link',
+                        data_url: options.dataUrl || ''
                       },
-                      e
+                      options
                     );
               }
             },
-            e
+            options
           );
         },
-        onMenuShareQQ: function(e) {
+        onMenuShareQQ: function(options) {
           handle(
             eventTypes.onMenuShareQQ,
             {
@@ -374,19 +413,19 @@
                 invoke(
                   'shareQQ',
                   {
-                    title: e.title || title,
-                    desc: e.desc || '',
-                    img_url: e.imgUrl || '',
-                    link: e.link || location.href
+                    title: options.title || title,
+                    desc: options.desc || '',
+                    img_url: options.imgUrl || '',
+                    link: options.link || location.href
                   },
-                  e
+                  options
                 );
               }
             },
-            e
+            options
           );
         },
-        onMenuShareWeibo: function(e) {
+        onMenuShareWeibo: function(options) {
           handle(
             eventTypes.onMenuShareWeibo,
             {
@@ -394,19 +433,19 @@
                 invoke(
                   'shareWeiboApp',
                   {
-                    title: e.title || title,
-                    desc: e.desc || '',
-                    img_url: e.imgUrl || '',
-                    link: e.link || location.href
+                    title: options.title || title,
+                    desc: options.desc || '',
+                    img_url: options.imgUrl || '',
+                    link: options.link || location.href
                   },
-                  e
+                  options
                 );
               }
             },
-            e
+            options
           );
         },
-        onMenuShareQZone: function(e) {
+        onMenuShareQZone: function(options) {
           handle(
             eventTypes.onMenuShareQZone,
             {
@@ -414,29 +453,38 @@
                 invoke(
                   'shareQZone',
                   {
-                    title: e.title || title,
-                    desc: e.desc || '',
-                    img_url: e.imgUrl || '',
-                    link: e.link || location.href
+                    title: options.title || title,
+                    desc: options.desc || '',
+                    img_url: options.imgUrl || '',
+                    link: options.link || location.href
                   },
-                  e
+                  options
                 );
               }
             },
-            e
+            options
           );
         },
-        updateTimelineShareData: function(e) {
+        updateTimelineShareData: function(options) {
           invoke(
             'updateTimelineShareData',
-            { title: e.title, link: e.link, imgUrl: e.imgUrl },
-            e
+            {
+              title: options.title,
+              link: options.link,
+              imgUrl: options.imgUrl
+            },
+            options
           );
         },
         updateAppMessageShareData: function(options) {
           invoke(
             'updateAppMessageShareData',
-            { title: options.title, desc: options.desc, link: options.link, imgUrl: options.imgUrl },
+            {
+              title: options.title,
+              desc: options.desc,
+              link: options.link,
+              imgUrl: options.imgUrl
+            },
             options
           );
         },
@@ -513,7 +561,11 @@
         },
         getLocation: function(e) {},
         previewImage: function(e) {
-          invoke(eventTypes.previewImage, { current: e.current, urls: e.urls }, e);
+          invoke(
+            eventTypes.previewImage,
+            { current: e.current, urls: e.urls },
+            e
+          );
         },
         uploadImage: function(e) {
           invoke(
