@@ -15,7 +15,7 @@ export default async () => {
   const status = await stat(FILE_PATH);
   const offsetMs = Date.now() - status.mtimeMs;
 
-  if (offsetMs > 7200 * 1000) {
+  if (offsetMs >= 7200 * 1000) {
     let accessToken = await getAccessToken();
     const baseUrl = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket';
     const params = {

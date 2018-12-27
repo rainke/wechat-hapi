@@ -6,7 +6,7 @@ import getAccessToken from './utils/getAccessToken';
 import sign from './utils/sign';
 
 const server = new Hapi.Server({
-  host: 'localhost',
+  host: '0.0.0.0',
   port: 4000,
   routes: {
     files: {

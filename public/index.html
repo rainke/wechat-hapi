@@ -6,17 +6,111 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>index.html</title>
     <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+    <script>
+      const onMenuShareTimeline = wx.onMenuShareTimeline;
+      wx.onMenuShareTimeline = function(config = {}) {
+        const success = config.success;
+        config.success = function(...arg) {
+          console.log('我监听到你分享了');
+          success(...arg); // 不考虑this
+        };
+        onMenuShareTimeline.call(this, config);
+      };
+    </script>
   </head>
   <body>
     <h1>hello</h1>
     <script>
-    wx.config({
-      appId: 'wxbb44073a0ea060b6',
-      timestamp: '',
-      nonceStr: '',
-      signature: '',
-      jsApiList: ['updateAppMessageShareData']
-    })
+      // fetch(`api/config?url=${location.href}`).then(res => res.json()).then((res) => {
+      //   console.log(res);
+      //   wx.config({
+      //     appId: 'wxbb44073a0ea060b6',
+      //     timestamp: res.timestamp,
+      //     nonceStr: res.noncestr,
+      //     signature: res.signature,
+      //     jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+      //   })
+      // });
+
+      // wx.ready(function() {
+      //   //需在用户可能点击分享按钮前就先调用
+      //   wx.onMenuShareTimeline({
+      //     title: 'xx', // 分享标题
+      //     link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      //     imgUrl: '', // 分享图标
+      //     success: function() {
+      //       console.log('success');
+      //     }
+      //   });
+      // });
+
+      function callback() {
+        // alert(WeixinJSBridge);
+        WeixinJSBridge.on('menu:share:appmessage', function() {
+          // alert('share');
+          var span = document.createElement('span');
+          span.innerText = 'hehehe';
+          document.body.appendChild(span);
+          // WeixinJSBridge.invoke('sendAppMessage',{
+          //     'appid': '', // 公众号appID
+          //     'type': 'link', // 非必填，music,vido或link,默认为link。
+          //     'data_url': '', // 非必填，连接地址,如音乐的mp3数据地址,供内置播放器使用
+          //     'img_url': 'http://pnewsapp.tc.qq.com/newsapp_bt/0/9963967/640', // 缩略图地址
+          //     'img_height':370, // 缩略图高度
+          //     'img_width':550, // 缩略图宽度
+          //     'link':'http://view.inews.qq.com/a/WXN2013101101385701', // 链接地址
+          //     'desc':'desc', // 描述
+          //     'title':'title' // 标题
+          // },function(res){
+          //     console.log(res);
+          // });
+          WeixinJSBridge.invoke('updateAppMessageShareData', {}, function(res) {
+            alert(JSON.stringify(res))
+          })
+        });
+
+        // WeixinJSBridge.invoke('getNetworkType',{},function(res){
+        //     alert(JSON.stringify(res));
+        //     console.log(res)
+        // });
+
+        // WeixinJSBridge.invoke(
+        //   'sendEmail',
+        //   {
+        //     title: 'title', // 标题
+        //     content: 'content' // 正文
+        //   },
+        //   function(res) {
+        //     alert(res.err_msg);
+        //   }
+        // );
+
+        // WeixinJSBridge.invoke('sendAppMessage',{
+        // "appid":"", //appid 设置空就好了。
+        // "img_url": '', //分享时所带的图片路径
+        // "img_width": "120", //图片宽度
+        // "img_height": "120", //图片高度
+        // "link":location.href, //分享附带链接地址
+        // "desc":"我是一个介绍", //分享内容介绍
+        // "title":"标题，再简单不过了。"
+        // }, function(res){
+        //   alert('send')
+        // });
+      }
+
+      if (
+        typeof WeixinJSBridge == 'object' &&
+        typeof WeixinJSBridge.invoke == 'function'
+      ) {
+        callback();
+      } else {
+        if (document.addEventListener) {
+          document.addEventListener('WeixinJSBridgeReady', callback, false);
+        } else if (document.attachEvent) {
+          document.attachEvent('WeixinJSBridgeReady', callback);
+          document.attachEvent('onWeixinJSBridgeReady', callback);
+        }
+      }
     </script>
   </body>
 </html>
